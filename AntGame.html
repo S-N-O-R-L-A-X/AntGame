@@ -6,15 +6,24 @@
     <body>
         <script>
             class Ant{
-                constructor(id,direction,position){
+                constructor(id,direction){
                     this.direction=direction;
                     this.id=id;
-                    this.position=position;
+                    
                 };
 
+                getName()
+                {
+                    return "ant"+this.id;
+                }
+
+                getPosition(){
+                    let name=this.getName();
+                    return document.getElementById(name).offsetLeft;
+                }
+
                 move() {
-                    let name="ant"+this.id;
-                    var elem=document.getElementById(name).offsetLeft;
+                    let name=this.getName(),elem=this.getPosition();
                     if(this.direction)
                         document.getElementById(name).style.left=(elem+10)+"px";
                     else
@@ -49,6 +58,7 @@
                     this.ants=[];
                     this.directions=this.buildDirections();
                     this.lives=new Array(5).fill(1);
+                    this.wood=new Wood(600);
                     for(let i=0;i<5;i++)
                     {
                         let tmp=new Ant(i,this.directions[i]);
@@ -60,7 +70,9 @@
 
                     for(let i=0;i<5;i++)
                     {
-                        if(fall(i))
+                        let now=this.ants[i];
+                        now.move();
+                        if(this.wood.fall(now.getPosition()))
                         {
                             let name="ant"+i;
                             document.getElementById(name).style.display="none";
@@ -85,11 +97,11 @@
             function f1(){
                 // var ant1=new Ant(1,1);
                 // ant1.move();
-                
+                pr.run();
             }
             
             function f2(){
-                pr.ants[0].move();
+                
             }
 
         </script>
