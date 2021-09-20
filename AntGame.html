@@ -31,7 +31,7 @@
                 };
                 
                 changeDirection(){
-                    return !this.direction;
+                    this.direction=!this.direction;
                 }
             };
 
@@ -67,20 +67,39 @@
                 }
 
                 run(){
-
                     for(let i=0;i<5;i++)
                     {
                         let now=this.ants[i];
                         now.move();
+
                         if(this.wood.fall(now.getPosition()))
                         {
                             let name="ant"+i;
                             document.getElementById(name).style.display="none";
+                            this.lives[i]=0;
+                        }    
+                    }   
+                    for(let i=0;i<5;i++)
+                    {
+                        if(this.lives[i])//the first ant survives
+                        {
+                            for(let j=i+1;j<5;j++)
+                            {
+                                if(this.lives[j]&&this.collision(this.ants[i],this.ants[j]))
+                                {
+                                    this.ants[i].changeDirection();
+                                    this.ants[j].changeDirection();
+                                }
+                            }
                         }
-                            
+                        
                     }
-                    
                 }
+
+                collision(ant1,ant2){
+                    return ant1.getPosition()==ant2.getPosition();
+                }
+
 
             };
 
@@ -95,8 +114,6 @@
             
             var pr=new PlayRoom();
             function f1(){
-                // var ant1=new Ant(1,1);
-                // ant1.move();
                 pr.run();
             }
             
