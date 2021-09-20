@@ -47,7 +47,7 @@
             class PlayRoom{
                 buildDirections(){
                     let ret=[];
-                    for(let i=0;i<5;i++)
+                    for(let i=0;i<5;i++)//use random to build directions
                         ret[i]=Math.floor(Math.random()*10)%2;
                     return ret;	
                 };
@@ -59,11 +59,16 @@
                     this.directions=this.buildDirections();
                     this.lives=new Array(5).fill(1);
                     this.wood=new Wood(600);
+                    this.end=5;
                     for(let i=0;i<5;i++)
                     {
                         let tmp=new Ant(i,this.directions[i]);
                         this.ants.push(tmp);
                     }
+                }
+                
+                setDirections(directions){
+                    this.directions=directions;
                 }
 
                 run(){
@@ -77,6 +82,7 @@
                             let name="ant"+i;
                             document.getElementById(name).style.display="none";
                             this.lives[i]=0;
+                            this.end--;
                         }    
                     }   
                     for(let i=0;i<5;i++)
@@ -99,26 +105,69 @@
                 collision(ant1,ant2){
                     return ant1.getPosition()==ant2.getPosition();
                 }
-
+                
+                isEnd(){
+                    return this.end;
+                }
 
             };
 
             class CreepingGame{
                 constructor(){
                     this.time=0;
-                    this.end=false;
-                    
+                    this.end=5;
+                    this.playroom=new PlayRoom();
                 }
+
+                driveGame(){
+                    if(this.playroom.isEnd())
+                    {
+                        // console.log(this.time)
+                        this.time+=1;
+                        this.playroom.run();
+                        setTimeout(()=>{this.driveGame()},100*this.time);
+                    }
+                }
+
+                dfs(round,pos,directions){
+                    if(pos==5)
+                    {
+                        this.playroom=new PlayRoom();
+                        this.playroom.setDirections(directions);
+                        this.driveGame();
+                        console.log(round+":"+this.time);
+                        round++;
+                        return ;
+                    }
+                    for(let i=pos;i<5;i++)
+                    {
+                        directions[i]=0;
+                        this.dfs(pos+1,directions);
+                        directions[1]=1;
+                        this.dfs(pos+1,directions);
+                    }
+                }
+
+                traverseAll(){
+                    let directions=new Array(5);
+                    this.dfs(0,0,directions);
+                }
+
             }
 
             
             var pr=new PlayRoom();
-            function f1(){
+            var cg=new CreepingGame();
+            function stepRandom(){
                 pr.run();
             }
             
-            function f2(){
-                
+            function autoRandom(){
+                cg.driveGame();
+            }
+
+            function showAll(){
+                cg.traverseAll();
             }
 
         </script>
@@ -131,8 +180,9 @@
             <div style="left:420px" class="ant" id="ant3"></div>
             <div style="left:600px" class="ant" id="ant4"></div>
         </div>
-        <button onclick="f1()">f1</button>
-        <button onclick="f2()">f2</button>
+        <button onclick="stepRandom()">step</button>
+        <button onclick="autoRandom()">auto</button>
+        <button onclick="showAll()">all</button>
     </body>
     <style>
         /* 2px=1cm */
