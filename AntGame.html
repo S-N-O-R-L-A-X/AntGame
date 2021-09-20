@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+    </head>
+    <body>
+        <script>
+            class Ant{
+                constructor(id,direction,position){
+                    this.direction=direction;
+                    this.id=id;
+                    this.position=position;
+                };
+
+                move() {
+                    let name="ant"+this.id;
+                    var elem=document.getElementById(name).offsetLeft;
+                    if(this.direction)
+                        document.getElementById(name).style.left=(elem+10)+"px";
+                    else
+                        document.getElementById(name).style.left=(elem-10)+"px";
+                };
+                
+                changeDirection(){
+                    return !this.direction;
+                }
+            };
+
+            class Wood{
+                constructor(length){
+                    this.length = length;
+                }
+                fall(position){
+                    return position<100||position>700;
+                }
+            };
+
+            class PlayRoom{
+                buildDirections(){
+                    let ret=[];
+                    for(let i=0;i<5;i++)
+                        ret[i]=Math.floor(Math.random()*10)%2;
+                    return ret;	
+                };
+
+                constructor(){
+                    this.incTime=1;
+                    this.velocity=10;
+                    this.ants=[];
+                    this.directions=this.buildDirections();
+                    this.lives=new Array(5).fill(1);
+                    for(let i=0;i<5;i++)
+                    {
+                        let tmp=new Ant(i,this.directions[i]);
+                        this.ants.push(tmp);
+                    }
+                }
+
+                run(){
+
+                    for(let i=0;i<5;i++)
+                    {
+                        if(fall(i))
+                        {
+                            let name="ant"+i;
+                            document.getElementById(name).style.display="none";
+                        }
+                            
+                    }
+                    
+                }
+
+            };
+
+            class CreepingGame{
+                constructor(){
+                    this.time=0;
+                    this.end=false;
+                    
+                }
+            }
+
+            
+            var pr=new PlayRoom();
+            function f1(){
+                // var ant1=new Ant(1,1);
+                // ant1.move();
+                
+            }
+            
+            function f2(){
+                pr.ants[0].move();
+            }
+
+        </script>
+
+        <div>
+            <div id="wood"></div>
+            <div style="left:160px" class="ant" id="ant0"></div>
+            <div style="left:260px" class="ant" id="ant1"></div>
+            <div style="left:320px" class="ant" id="ant2"></div>
+            <div style="left:420px" class="ant" id="ant3"></div>
+            <div style="left:600px" class="ant" id="ant4"></div>
+        </div>
+        <button onclick="f1()">f1</button>
+        <button onclick="f2()">f2</button>
+    </body>
+    <style>
+        /* 2px=1cm */
+        #wood
+        {
+            position:absolute;
+            width:600px;
+            height:40px;
+            background-color:yellow;
+            top:200px;
+            left:100px;
+        }
+        .ant
+        {
+            background-color:blue;
+            width:20px;
+            height:20px;
+            position:absolute;
+            top:200px;
+
+        }
+        #ant0
+        {
+            background-color:blue;
+        }
+        #ant1
+        {
+            background-color:green;
+        }
+        #ant2
+        {
+            background-color:red;
+        }
+        #ant3
+        {
+            background-color:black;
+        }
+        #ant4
+        {
+            background-color:white;
+        }
+    </style>
+</html>
