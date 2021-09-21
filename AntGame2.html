@@ -31,7 +31,7 @@
                 };
                 
                 changeDirection(){
-                    this.direction^=1;
+                    this.direction=!this.direction;
                 }
             };
 
@@ -69,23 +69,14 @@
                 
                 setDirections(directions){
                     this.directions=directions;
-                    for(let i=0;i<5;i++)
-                    {
-                        this.ants[i].direction=directions[i];
-                    }
                 }
 
                 reset(){
                     document.getElementById("ant0").style.left="160px";
-                    document.getElementById("ant0").style.display="block";
                     document.getElementById("ant1").style.left="260px";
-                    document.getElementById("ant1").style.display="block";
                     document.getElementById("ant2").style.left="320px";
-                    document.getElementById("ant2").style.display="block";
                     document.getElementById("ant3").style.left="420px";
-                    document.getElementById("ant3").style.display="block";
                     document.getElementById("ant4").style.left="600px";
-                    document.getElementById("ant4").style.display="block";
                 }
 
                 run(){
@@ -134,22 +125,23 @@
             };
 
             class CreepingGame{
+                
+
                 constructor(){
                     this.time=0;
                     this.end=5;
                     this.round=0;
                     this.playroom=new PlayRoom();
+                    // this.reset();
                 }
 
                 driveGame(){
                     if(this.playroom.isEnd())
                     {
                         // console.log(this.time)
-                        this.time++;
+                        this.time+=1;
                         this.playroom.run();
-                        // setTimeout(()=>{this.driveGame()},1000);
-                        setTimeout(this.driveGame(),1000)
-                        
+                        setTimeout(()=>{this.driveGame()},100);
                     }
                 }
 
@@ -175,12 +167,9 @@
                 */
                 
 
-                reset(){
-                    this.playroom.reset();
-                    this.time=0;
-                }
 
-                async traverseAll(){
+                traverseAll(){
+                    
                     // this.dfs(0,0,directions);
                     for(let i=0;i<(1<<5);i++)
                     {
@@ -194,12 +183,10 @@
                                 directions[j]=0;
                             mask<<=1;
                         }
-                        this.playroom=new PlayRoom();
                         this.playroom.setDirections(directions);
-                        setTimeout(this.driveGame(),50000);
+                        this.driveGame();
                         console.log(this.round+":"+this.time);
-                        this.round++;
-                        this.reset();
+                        this.playroom.reset();
                     }
                 }
 

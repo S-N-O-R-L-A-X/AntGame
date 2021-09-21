@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+
+    </body>
+    <script>
+        async function f1()
+        {
+            return new Promise((resolve)=>{
+                for(let i=0;i<5;i++){
+                    setTimeout(function(){console.log("*");},1000*i);
+                }
+                Promise.resolve("end!");
+            });
+        }
+        
+        async function f2()
+        {
+            let result=await f1();
+            result.then(()=>{
+                alert("end");
+            })
+        }
+
+        function f3(){
+            for(let i=0;i<5;i++){
+                setTimeout(function(){console.log("*");},1000*i);
+            }
+        }
+
+        function f4(){
+            f3();
+            setTimeout(()=>{console.log("end");},5000);
+            
+        }
+
+        let promiseTemp = null;
+        let promiseResolve = null;
+        function loginFinish() {
+            return promiseTemp;
+        }
+
+        function func1(){
+            let temp = new Promise((res, rej) => {
+                setTimeout( () => {
+                    console.log('第三');
+                    promiseResolve('我执行完了，轮到第四了')
+                },1000)
+            })
+        }
+        function func2() {
+            promiseTemp = new Promise(resolve => promiseResolve = resolve); 
+            console.log("第二")
+            func1();
+        }
+        async function func3(){
+            console.log('第一');
+            func2();
+            let a = await loginFinish();
+            // console.log(a)
+            console.log('第四');
+        }
+        
+        function test(){
+            var i=0;
+            var func=function(){
+                if(i===10)
+                    console.log("end");
+                else{
+                    console.log("*");
+                    i++;
+                    setTimeout(func,1000);
+                }
+            }
+            setTimeout(func,1000);
+        }
+        
+
+
+        var i=0;
+            var func=function(){
+                if(i===10)
+                    console.log("end");
+                else{
+                    console.log("*");
+                    i++;
+                    setTimeout(func,1000);
+                }
+            }
+        function array(){
+            
+            setTimeout(func,1000);
+        }
+
+
+
+        function driveGame(){
+            if(this.playroom.isEnd())
+            {
+                // console.log(this.time)
+                this.time++;
+                this.playroom.run();
+                setTimeout(()=>{this.driveGame()},1000);
+                // setTimeout("this.playroom.run",100)
+                
+            }
+        }
+
+        
+    </script>
+</html>
