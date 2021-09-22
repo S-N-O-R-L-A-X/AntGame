@@ -142,15 +142,15 @@
                 }
 
                 driveGame(){
-                    if(this.playroom.isEnd())
-                    {
-                        // console.log(this.time)
+                    // if(this.playroom.isEnd())
+                    // {
+                    //     this.playroom.run();
+                    //     this.time++;
+                    //     setTimeout(()=>{this.driveGame()},100);
+                    //     // setTimeout(this.driveGame(),1000)
+                    // }
                         this.time++;
                         this.playroom.run();
-                        // setTimeout(()=>{this.driveGame()},1000);
-                        setTimeout(this.driveGame(),1000)
-                        
-                    }
                 }
 
                 /*
@@ -180,7 +180,7 @@
                     this.time=0;
                 }
 
-                async traverseAll(){
+                traverseAll(){
                     // this.dfs(0,0,directions);
                     for(let i=0;i<(1<<5);i++)
                     {
@@ -196,7 +196,13 @@
                         }
                         this.playroom=new PlayRoom();
                         this.playroom.setDirections(directions);
-                        setTimeout(this.driveGame(),50000);
+                        if(this.playroom.isEnd())
+                        {
+                            this.playroom.run();
+                            setTimeout(()=>{this.driveGame()},1000);
+                        }
+                        
+                        // setTimeout(this.driveGame(),1000);
                         console.log(this.round+":"+this.time);
                         this.round++;
                         this.reset();

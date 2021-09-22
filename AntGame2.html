@@ -69,6 +69,10 @@
                 
                 setDirections(directions){
                     this.directions=directions;
+                    for(let i=0;i<5;i++)
+                    {
+                        this.ants[i].direction=directions[i];
+                    }
                 }
 
                 reset(){
@@ -139,7 +143,7 @@
                     if(this.playroom.isEnd())
                     {
                         // console.log(this.time)
-                        this.time+=1;
+                        this.time++;
                         this.playroom.run();
                         setTimeout(()=>{this.driveGame()},100);
                     }
@@ -184,8 +188,10 @@
                             mask<<=1;
                         }
                         this.playroom.setDirections(directions);
-                        this.driveGame();
+                        setTimeout(this.driveGame(),1000);//one situation
+                        
                         console.log(this.round+":"+this.time);
+                        this.round++;
                         this.playroom.reset();
                     }
                 }
