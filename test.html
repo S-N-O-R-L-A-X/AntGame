@@ -83,7 +83,7 @@
 
             real(){
                 this.cnt--;
-                console.log("shit!");
+                console.log("!");
             }
 
             getCnt(){
@@ -96,11 +96,21 @@
                 this.a=new A();
             }
             fun(){
-                // if(this.a.getCnt()>0){
+                if(this.a.getCnt()>0){
                     this.a.real();
-                //     setTimeout(this.fun(),1000);
-                // }
+                    setTimeout(()=>this.fun(),1000);
+                }
             }
+
+            x() {
+            var promise = new Promise(resolve => setTimeout(() =>{
+                if(this.a.getCnt()>0){
+                    this.a.real();
+                    setTimeout(()=>this.fun(),1000);
+                }
+            } , 1000));
+            return promise;
+        }
         }
 
         class C{
@@ -108,17 +118,22 @@
                 this.b=new B();
             }
             f(){
-                if(this.b.a.getCnt()>0){
-                    this.b.fun();
-                    setTimeout(()=>{this.f()},1000);
-
-                }
+                this.b.fun();
+                console.log("end")
+            }
+            
+            async y() {
+                console.log("1");
+                var y = await x();
+                console.log(y);
+                console.log("3");
             }
         }
 
         
         var c=new C(),a=new A();  
         var i=0;
+        
         var func=function(){
             if(i===10)
                 console.log("end");
@@ -134,19 +149,30 @@
         }
 
 
-
-        function driveGame(){
-            if(this.playroom.isEnd())
+        function func2(){
+            if(i<10)
             {
-                // console.log(this.time)
-                this.time++;
-                this.playroom.run();
-                setTimeout(()=>{this.driveGame()},1000);
-                // setTimeout("this.playroom.run",100)
-                
+                console.log('*')
+                i++;
+                setTimeout(func2,1000);
             }
         }
 
+        function func3(){
+            setTimeout(func2,1000);
+        }
+        
+        function x() {
+            var promise = new Promise(resolve => setTimeout(() => resolve("2"), 3000));
+            return promise;
+        }
+        async function y() {
+            console.log("1");
+            var y = await x();
+            console.log(y);
+            console.log("3");
+        }
+        y();
 
         
     </script>

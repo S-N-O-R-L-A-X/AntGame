@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+    </head>
+    <body>
+        <script>
+            class A {
+                constructor() {
+                    this.cnt = 5;
+                }
+
+                real() {
+                    this.cnt--;
+                    console.log("!");
+                }
+
+                getCnt() {
+                    return this.cnt;
+                }
+            }
+
+            class B {
+                constructor() {
+                    this.a = new A();
+                }
+                fun() {
+                    return new Promise((resolve) => {
+                    if (this.a.getCnt() > 0) {
+                        this.a.real();
+                        setTimeout(() => resolve(this.fun()), 1000);
+                    } else 
+                        resolve()
+                    
+                    })
+
+                }
+            }
+
+            class C {
+                constructor() {
+                    this.b = new B();
+                }
+                f() {
+                    for(let i = 0; i <10;i++)
+                    {
+                        this.b.fun().then(() => {
+                            console.log("end");
+                        })
+                    }
+                    
+
+                }
+            }
+                var c = new C();
+                c.f();
+
+
+                async function delay(ms) {
+                    return new Promise((resolve) => setTimeout(resolve, ms));
+                }
+
+                    // Calls a function `fun` `times` times, delaying for `delayTime` ms between each invocation.
+                    // Since this is an async function, it returns a promise that will resolve as soon as it's done,
+                    // which in turn can be awaited upon.
+                    async function repeatWithDelay(fun, times, delayTime) {
+                        for (let i = 0; i < times; i++) {
+                            await fun(i);
+                            await delay(delayTime);
+                        }
+                    }
+
+                    // Prints the number passed in (could just print an exclamation mark).
+                    function print(i) {
+                        console.log(`${i}!`);
+                    }
+
+                    async function main() {
+                        console.log("Go!");
+                        await repeatWithDelay(print, 5, 500);
+                        console.log("Done!");
+                    }
+
+                    // Assumes top-level `await` is not available in your environment.
+                    // If it is, this too can be replaced with a simple `await`.
+                    main().then(() => {
+                    console.log("Main done.");
+                    });
+
+        </script>
+
+        <div>
+            <div id="wood"></div>
+            <div style="left:160px" class="ant" id="ant0"></div>
+            <div style="left:260px" class="ant" id="ant1"></div>
+            <div style="left:320px" class="ant" id="ant2"></div>
+            <div style="left:420px" class="ant" id="ant3"></div>
+            <div style="left:600px" class="ant" id="ant4"></div>
+        </div>
+        <button onclick="stepRandom()">step</button>
+        <button onclick="autoRandom()">auto</button>
+        <button onclick="showAll()">all</button>
+    </body>
+    <style>
+        /* 2px=1cm */
+        #wood
+        {
+            position:absolute;
+            width:600px;
+            height:40px;
+            background-color:yellow;
+            top:200px;
+            left:100px;
+        }
+        .ant
+        {
+            background-color:blue;
+            width:20px;
+            height:20px;
+            position:absolute;
+            top:200px;
+
+        }
+        #ant0
+        {
+            background-color:blue;
+        }
+        #ant1
+        {
+            background-color:green;
+        }
+        #ant2
+        {
+            background-color:red;
+        }
+        #ant3
+        {
+            background-color:black;
+        }
+        #ant4
+        {
+            background-color:white;
+        }
+    </style>
+</html>

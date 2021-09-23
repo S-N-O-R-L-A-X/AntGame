@@ -143,51 +143,22 @@
 
                 pause(milliseconds) {
                     var dt = new Date();
-                    while ((new Date()) - dt <= milliseconds) { /* Do nothing */ }
+                    while ((new Date()) - dt <= milliseconds);
                 }
 
-                sleep(ms) {
-                    return new Promise(resolve => setTimeout(resolve, ms));
-                }
-                
-                async wait(){await this.sleep(1000);}
 
                 driveGame(){
-                    var promise = new Promise(resolve =>setTimeout(()=>{
-                        if(this.playroom.isEnd())
-                        {
-                            this.playroom.run();
-                            this.time++;
-                            this.driveGame();
-                            // setTimeout(()=>{this.driveGame()},100);
-                            // setTimeout(this.driveGame(),100)
-                        }
-                    },100));
-                    return promise;
                     
-                }
-
-                /*
-                dfs(round,pos,directions){
-                    if(pos===5)
+                    if(this.playroom.isEnd())
                     {
-                        this.playroom=new PlayRoom();
-                        this.playroom.setDirections(directions);
+                        this.playroom.run();
+                        this.time++;
                         this.driveGame();
-                        console.log(round+":"+this.time);
-                        round++;
-                        return ;
+                        this.pause(1000);
                     }
-                    for(let i=pos;i<5;i++)
-                    {
-                        directions[i]=0;
-                        this.dfs(round,pos+1,directions);
-                        directions[1]=1;
-                        this.dfs(round,pos+1,directions);
-                    }
-                }
-                */
                 
+                }
+          
 
                 reset(){
                     this.playroom.reset();
@@ -195,7 +166,6 @@
                 }
 
                 traverseAll(){
-                    // this.dfs(0,0,directions);
                     for(let i=0;i<(1<<5);i++)
                     {
                         let directions=new Array(5);
@@ -210,14 +180,12 @@
                         }
                         this.playroom=new PlayRoom();
                         this.playroom.setDirections(directions);
-                        // setTimeout(this.driveGame(),1000);  
-                        // await this.driveGame();
-                        // this.pause(10000);
-                        this.driveGame.then(()=>{
-                            console.log(this.round+":"+this.time);
-                            this.round++;
-                            this.reset();
-                        })
+                        this.driveGame();
+
+                        console.log(this.round+":"+this.time);
+                        this.round++;
+                        this.reset();
+                        
                         
                     }
                 }

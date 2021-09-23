@@ -153,17 +153,19 @@
                 async wait(){await this.sleep(1000);}
 
                 driveGame(){
-                    var promise = new Promise(resolve =>setTimeout(()=>{
+                    return new Promise((resolve) =>{
                         if(this.playroom.isEnd())
                         {
                             this.playroom.run();
                             this.time++;
-                            this.driveGame();
-                            // setTimeout(()=>{this.driveGame()},100);
+                            
+                            setTimeout(()=>{resolve(this.driveGame());},100);
                             // setTimeout(this.driveGame(),100)
                         }
-                    },100));
-                    return promise;
+                        else
+                            resolve();
+                    },100);
+                    
                     
                 }
 
@@ -213,7 +215,7 @@
                         // setTimeout(this.driveGame(),1000);  
                         // await this.driveGame();
                         // this.pause(10000);
-                        this.driveGame.then(()=>{
+                        this.driveGame().then(()=>{
                             console.log(this.round+":"+this.time);
                             this.round++;
                             this.reset();
