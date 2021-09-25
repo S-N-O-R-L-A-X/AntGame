@@ -166,7 +166,6 @@
                             resolve();
                     },100);
                     
-                    
                 }
                 
                 reset(){
@@ -177,11 +176,15 @@
                 output(){
                     let m=Math.min(...this.ans),M=Math.max(...this.ans);
                     
-                    document.getElementById("output").innerHTML+="MAX:"+M+"<br>";
-                    document.getElementById("output").innerHTML+="min:"+m+"<br>";
+                    document.getElementById("output").innerHTML+="<br>最慢:"+M+"秒<br>";
+                    document.getElementById("output").innerHTML+="最快:"+m+"秒<br>";
                 }
 
                 async traverseAll(){
+                    let showSpeed=50;
+                    if(document.getElementById("showSpeed").value!=='')
+                        showSpeed=parseInt(document.getElementById("showSpeed").value);
+
                     for(let i=0;i<(1<<5);i++)
                     {
                         let directions=new Array(5);
@@ -197,15 +200,16 @@
                         this.playroom=new PlayRoom();
                         this.playroom.setDirections(directions);
                         
-                        await this.repeatWithDelay(10);
+                        await this.repeatWithDelay(showSpeed);
 
                         console.log(this.round+":"+this.time);
                         this.ans.push(this.time);
                         this.round++;
                         this.reset();
                     }
+                    this.output();
                 }
-
+                
             };
 
             
@@ -235,7 +239,19 @@
         </div>
         
         <div>
-            <input type="text" id="" placeholder="the running speed:10ms by default"></input>
+            <input type="text" id="showSpeed" placeholder="the show speed in overall:50ms by default"></input>
+            <br>
+            <input type="text" disabled placeholder="the position of the first ant:30cm by default"></input>
+            <br>
+            <input type="text" disabled placeholder="the position of the second ant:80cm by default"></input>
+            <br>
+            <input type="text" disabled placeholder="the position of the third ant:110cm by default"></input>
+            <br>
+            <input type="text" disabled placeholder="the position of the fourth ant:160cm by default"></input>
+            <br>
+            <input type="text" disabled placeholder="the position of the fifth ant:250cm by default"></input>
+            <br>
+            <br>
             <button onclick="stepRandom()">step</button>
             <button onclick="autoRandom()">auto</button>
             <button onclick="showAll()">all</button>
@@ -252,8 +268,18 @@
             width:600px;
             height:40px;
             background-color:yellow;
-            top:200px;
+            top:500px;
             left:100px;
+        }
+
+        input{
+            outline-style: none ;
+            border: 1px solid #ccc; 
+            border-radius: 3px;
+            padding: 10px 10px;
+            width: 450px;
+            font-size: 20px;
+            border-radius: 4px;
         }
 
         button 
@@ -274,13 +300,13 @@
             width:20px;
             height:20px;
             position:absolute;
-            top:200px;
+            top:500px;
 
         }
         .output
         {
             position:absolute;
-            top:600px;
+            top:700px;
         }
         #ant0
         {
