@@ -139,11 +139,7 @@
                     this.end=5;
                     this.round=0;
                     this.playroom=new PlayRoom();
-                }
-
-                pause(milliseconds) {
-                    var dt = new Date();
-                    while ((new Date()) - dt <= milliseconds) { /* Do nothing */ }
+                    this.ans=[];
                 }
 
                 sleep(ms) {
@@ -172,11 +168,17 @@
                     
                     
                 }
-
                 
                 reset(){
                     this.playroom.reset();
                     this.time=0;
+                }
+
+                output(){
+                    let m=Math.min(...this.ans),M=Math.max(...this.ans);
+                    
+                    document.getElementById("output").innerHTML+="MAX:"+M+"<br>";
+                    document.getElementById("output").innerHTML+="min:"+m+"<br>";
                 }
 
                 async traverseAll(){
@@ -195,12 +197,12 @@
                         this.playroom=new PlayRoom();
                         this.playroom.setDirections(directions);
                         
-                        await this.repeatWithDelay(100);
+                        await this.repeatWithDelay(10);
+
                         console.log(this.round+":"+this.time);
+                        this.ans.push(this.time);
                         this.round++;
                         this.reset();
-                        
-                        
                     }
                 }
 
@@ -231,9 +233,16 @@
             <div style="left:420px" class="ant" id="ant3"></div>
             <div style="left:600px" class="ant" id="ant4"></div>
         </div>
-        <button onclick="stepRandom()">step</button>
-        <button onclick="autoRandom()">auto</button>
-        <button onclick="showAll()">all</button>
+        
+        <div>
+            <input type="text" id="" placeholder="the running speed:10ms by default"></input>
+            <button onclick="stepRandom()">step</button>
+            <button onclick="autoRandom()">auto</button>
+            <button onclick="showAll()">all</button>
+        </div>
+        <div id="output">
+
+        </div>
     </body>
     <style>
         /* 2px=1cm */
@@ -246,6 +255,19 @@
             top:200px;
             left:100px;
         }
+
+        button 
+        {
+            background-color: gray; 
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
         .ant
         {
             background-color:blue;
@@ -254,6 +276,11 @@
             position:absolute;
             top:200px;
 
+        }
+        .output
+        {
+            position:absolute;
+            top:600px;
         }
         #ant0
         {
