@@ -9,7 +9,6 @@
                 constructor(id,direction){
                     this.direction=direction;
                     this.id=id;
-                    
                 };
 
                 getName()
@@ -175,7 +174,6 @@
 
                 output(){
                     let m=Math.min(...this.ans),M=Math.max(...this.ans);
-                    
                     document.getElementById("output").innerHTML+="<br>最慢:"+M+"秒<br>";
                     document.getElementById("output").innerHTML+="最快:"+m+"秒<br>";
                 }
@@ -226,6 +224,9 @@
             function showAll(){
                 cg.traverseAll();
             }
+            function reset(){
+                cg.reset();
+            }
 
         </script>
 
@@ -255,6 +256,7 @@
             <button onclick="stepRandom()">step</button>
             <button onclick="autoRandom()">auto</button>
             <button onclick="showAll()">all</button>
+            <button onclick="reset()">reset</button>
         </div>
         <div id="output">
 
